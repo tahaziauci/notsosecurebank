@@ -1,0 +1,41 @@
+package com.example.Broken.Bank.controller;
+
+import com.example.Broken.Bank.entity.User;
+import com.example.Broken.Bank.model.UserModel;
+import com.example.Broken.Bank.service.UserService;
+import com.example.Broken.Bank.service.UserServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+
+@RestController
+public class UserController {
+
+    @Autowired
+    private UserService userService;
+
+    @PostMapping("/register")
+    public ResponseEntity register(@Valid @RequestBody UserModel userModel, HttpSession session) {
+        session.setAttribute("currentUser", userModel.getUsername());
+        return userService.saveNewUser(userModel);
+    }
+
+
+    @PostMapping("/signin")
+    public ResponseEntity signin(@Valid @RequestBody User user, HttpSession session) {
+        return userService.checkUser(user, session);
+    }
+
+    @GetMapping("/view")
+    public ResponseEntity viewAccount(HttpSession session) {
+        return userService.viewUserBalance(session);
+    }
+    // withdraw, deposit
+}
