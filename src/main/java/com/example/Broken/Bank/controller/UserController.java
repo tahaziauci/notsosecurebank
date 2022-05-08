@@ -1,5 +1,6 @@
 package com.example.Broken.Bank.controller;
 
+import com.example.Broken.Bank.Response.MoneyRequest;
 import com.example.Broken.Bank.entity.User;
 import com.example.Broken.Bank.model.UserModel;
 import com.example.Broken.Bank.service.UserService;
@@ -38,4 +39,9 @@ public class UserController {
         return userService.viewUserBalance(session);
     }
     // withdraw, deposit
+
+    @PostMapping("/withdraw")
+    public ResponseEntity withdraw(HttpSession session, @Valid @RequestBody MoneyRequest moneyRequest) {
+        return userService.withdraw(session, moneyRequest);
+    }
 }
