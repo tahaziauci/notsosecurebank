@@ -37,7 +37,6 @@ public class User {
     @Size(max = 127, message = "password length should be between 1 - 127")
     String password;
 
-    @NotNull(message = "Balance shouldn't be null")
     @DecimalMin(value = "0.0", message = "Balance should be bigger than 0.00")
     @DecimalMax(value = "4294967295.99", message = "Balance should be smaller than 4294967295.99") // TODO: need to double check
     BigDecimal balance;
