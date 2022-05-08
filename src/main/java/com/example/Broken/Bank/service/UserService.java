@@ -9,7 +9,7 @@ import javax.servlet.http.HttpSession;
 
 public interface UserService {
 
-    ResponseEntity saveNewUser(UserModel userModel);
+    ResponseEntity saveNewUser(User user);
     ResponseEntity checkUser(User user, HttpSession session);
     ResponseEntity viewUserBalance(HttpSession session);
     ResponseEntity withdraw(HttpSession session, MoneyRequest moneyRequest);
