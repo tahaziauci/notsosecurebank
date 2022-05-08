@@ -1,16 +1,62 @@
 import React, { Component } from "react";
+import axios from 'axios';
+import { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import AppContext from '../AppContext';
 
-export default class Login extends Component {
-  render() {
+export function Login(props) {
+  const [values, setValues] = useState({
+    username: '',
+    password: ''
+  });
+
+  const appValues = useContext(AppContext);
+  const navigate = useNavigate();
+
+  const handleUsernameChange = (event) => {
+    event.persist();
+
+    setValues((values) => ({
+      ...values,
+      username: event.target.value,
+    }));
+  };
+
+  const handlePasswordChange = (event) => {
+    event.persist();
+
+    setValues((values) => ({
+      ...values,
+      password: event.target.value,
+    }));
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const {username, password} = values;
+
+
+    axios.post('http://localhost:8080/signin', {username, password})
+      .then(response => console.log(response))
+      .then(navigate("/welcome"))
+      .catch(error => {
+          console.error('There was an error!', error);
+      });
+
+    appValues.updateUsername(username);
+  };
+
     return (
-      <form>
+      <form onSubmit={handleSubmit}>
         <h3>Sign In</h3>
         <div className="mb-3">
-          <label>Email address</label>
+          <label>Username</label>
           <input
-            type="email"
+            type="username"
             className="form-control"
-            placeholder="Enter email"
+            placeholder="Enter username"
+            value={values.username}
+            onChange={handleUsernameChange}
           />
         </div>
         <div className="mb-3">
@@ -19,19 +65,9 @@ export default class Login extends Component {
             type="password"
             className="form-control"
             placeholder="Enter password"
+            value={values.password}
+            onChange={handlePasswordChange}
           />
-        </div>
-        <div className="mb-3">
-          <div className="custom-control custom-checkbox">
-            <input
-              type="checkbox"
-              className="custom-control-input"
-              id="customCheck1"
-            />
-            <label className="custom-control-label" htmlFor="customCheck1">
-              Remember me
-            </label>
-          </div>
         </div>
         <div className="d-grid">
           <button type="submit" className="btn btn-primary">
@@ -39,9 +75,8 @@ export default class Login extends Component {
           </button>
         </div>
         <p className="forgot-password text-right">
-          Forgot <a href="#">password?</a>
+          New user? Go to <a href="/registration">registration</a>
         </p>
       </form>
     )
-  }
 }
