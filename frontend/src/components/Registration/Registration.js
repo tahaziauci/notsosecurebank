@@ -1,11 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import axios from 'axios';
+import AppContext from '../AppContext';
 
 export function Registration(props) {
     const [values, setValues] = useState({
       username: '',
       password: ''
     });
+
+    const appValues = useContext(AppContext);
 
     const handleUsernameChange = (event) => {
       event.persist();
@@ -35,6 +38,9 @@ export function Registration(props) {
         .catch(error => {
             console.error('There was an error!', error);
         });
+
+      appValues.updateUsername(username);
+      console.log(appValues);
 
     };
 
