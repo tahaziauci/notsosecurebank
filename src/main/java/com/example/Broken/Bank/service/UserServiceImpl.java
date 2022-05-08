@@ -5,7 +5,6 @@ import com.example.Broken.Bank.Response.HandleMoneyResponse;
 import com.example.Broken.Bank.Response.MoneyRequest;
 import com.example.Broken.Bank.Response.SuccessResponse;
 import com.example.Broken.Bank.entity.User;
-import com.example.Broken.Bank.model.UserModel;
 import com.example.Broken.Bank.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,27 +26,27 @@ public class UserServiceImpl implements UserService {
     UserRepository userRepository;
 
     @Override
-    public ResponseEntity saveNewUser(UserModel userModel) {
-        String username = userModel.getUsername();
-        String password = userModel.getPassword();  // TODO: for FIX, we need to hash password and store in DB: passwordEncoder.encode(password)
-        BigDecimal balance = userModel.getBalance();
+    public ResponseEntity saveNewUser(User user) {
+        String username = user.getUsername();
+        String password = user.getPassword();  // TODO: for FIX, we need to hash password and store in DB: passwordEncoder.encode(password)
+        BigDecimal balance = user.getBalance();
 
         // check duplicate user
-        if (userRepository.existsUserByUsername(username)) {
+        if (userRepository.existsUserByUsername(username) || balance == null) {
             ErrorResponse msg = ErrorResponse
                     .builder()
                     .code(HttpStatus.BAD_REQUEST.value())
-                    .message("User exists already")
+                    .message("Bad request: duplicate username, empty initial balance etc.")
                     .timestamp(new Date())
                     .build();
             return ResponseEntity.badRequest().body(msg);
         }
 
         // add new user
-        User user = User.builder()
+        User newUser = User.builder()
                 .username(username).password(password).balance(balance).build();
 
-        userRepository.save(user);
+        userRepository.save(newUser);
 
         SuccessResponse msg = SuccessResponse
                 .builder()
