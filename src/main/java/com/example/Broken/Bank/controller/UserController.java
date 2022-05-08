@@ -23,9 +23,8 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity register(@Valid @RequestBody UserModel userModel, HttpSession session) {
-        session.setAttribute("currentUser", userModel.getUsername());
-        return userService.saveNewUser(userModel);
+    public ResponseEntity register(@Valid @RequestBody User user) {
+        return userService.saveNewUser(user);
     }
 
 
