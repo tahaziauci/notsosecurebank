@@ -2,6 +2,7 @@ package com.example.Broken.Bank.service;
 
 import com.example.Broken.Bank.Response.ErrorResponse;
 import com.example.Broken.Bank.Response.HandleMoneyResponse;
+import com.example.Broken.Bank.Response.MoneyRequest;
 import com.example.Broken.Bank.Response.SuccessResponse;
 import com.example.Broken.Bank.entity.User;
 import com.example.Broken.Bank.model.UserModel;
@@ -103,6 +104,47 @@ public class UserServiceImpl implements UserService {
                 .timestamp(new Date())
                 .username(user.getUsername())
                 .balance(user.getBalance())
+                .build();
+        return ResponseEntity.ok(handleMoneyResponse);
+    }
+
+    @Override
+    public ResponseEntity withdraw(HttpSession session, MoneyRequest moneyRequest) {
+        String userName = (String) session.getAttribute(CURRENTUSER);
+        if (userName == null || !userRepository.existsUserByUsername(userName) || !moneyRequest.getUsername().equals(userName)) {
+            ErrorResponse msg = ErrorResponse
+                    .builder()
+                    .code(HttpStatus.UNAUTHORIZED.value())
+                    .message("User is not authorized. Please sign in!")
+                    .timestamp(new Date())
+                    .build();
+            return ResponseEntity.badRequest().body(msg);
+        }
+
+        User user = userRepository.findUserByUsername(userName);
+        BigDecimal currentBalance = user.getBalance();
+        BigDecimal withdrawAmount = moneyRequest.getAmount();
+
+        if (currentBalance.compareTo(withdrawAmount) == -1) {
+            ErrorResponse msg = ErrorResponse
+                    .builder()
+                    .code(HttpStatus.BAD_REQUEST.value())
+                    .message("Withdraw money is larger than your current balance!")
+                    .timestamp(new Date())
+                    .build();
+            return ResponseEntity.badRequest().body(msg);
+        }
+
+        user.setBalance(currentBalance.subtract(withdrawAmount));
+        User updatedUser = userRepository.save(user);
+
+        HandleMoneyResponse handleMoneyResponse = HandleMoneyResponse
+                .builder()
+                .code(HttpStatus.OK.value())
+                .message("Withdraw Success")
+                .timestamp(new Date())
+                .username(updatedUser.getUsername())
+                .balance(updatedUser.getBalance())
                 .build();
         return ResponseEntity.ok(handleMoneyResponse);
     }
