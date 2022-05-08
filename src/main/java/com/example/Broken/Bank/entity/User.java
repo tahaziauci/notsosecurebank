@@ -9,10 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
 
 
@@ -40,5 +37,8 @@ public class User {
     @Size(max = 127, message = "password length should be between 1 - 127")
     String password;
 
+    @NotNull(message = "Balance shouldn't be null")
+    @DecimalMin(value = "0.0", message = "Balance should be bigger than 0.00")
+    @DecimalMax(value = "4294967295.99", message = "Balance should be smaller than 4294967295.99") // TODO: need to double check
     BigDecimal balance;
 }
