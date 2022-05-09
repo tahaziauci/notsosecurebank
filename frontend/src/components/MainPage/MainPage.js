@@ -4,13 +4,18 @@ import AppContext from '../AppContext';
 
 export function MainPage(props) {
     const [withdrawAmount, setWithdrawAmount] = useState(0);
+    const [depositAmount, setDepositAmount] = useState(0);
 
     const appValues = useContext(AppContext);
 
-    const handleAmountChange = (event) => {
+    const handleWithdrawAmountChange = (event) => {
         event.persist();
-
         setWithdrawAmount(event.target.value);
+    }
+
+    const handleDepositAmountChange = (event) => {
+        event.persist();
+        setDepositAmount(event.target.value);
     }
 
     useEffect(() => {
@@ -40,6 +45,20 @@ export function MainPage(props) {
         }
     }
 
+    const sendDepositRequest = () => {
+        const username = appValues.username;
+        const amount = depositAmount;
+        axios.defaults.withCredentials = true;
+        axios.post('http://localhost:8080/deposit', {username, amount})
+        .then(response => {
+            setDepositAmount(0)
+            appValues.updateBalance(response.data.balance)
+        })
+        .catch(error => {
+            console.error('There was an error!', error);
+        })
+    }
+
     return(
         <div>
         <h3>Welcome, {appValues.username}!</h3>
@@ -54,12 +73,29 @@ export function MainPage(props) {
             pattern="[0-9]*"
             placeholder="Enter amount"
             value={withdrawAmount}
-            onChange={handleAmountChange}
+            onChange={handleWithdrawAmountChange}
           />
         </div>
         <div className="d-grid">
           <button type="submit" className="btn btn-primary" onClick={sendWithdrawRequest}>
             Withdraw
+          </button>
+        </div>
+        <div className="mb-3"></div>
+        <div className="mb-3">
+          <label>Deposit amount</label>
+          <input
+            type="amount"
+            className="form-control"
+            pattern="[0-9]*"
+            placeholder="Enter amount"
+            value={depositAmount}
+            onChange={handleDepositAmountChange}
+          />
+        </div>
+        <div className="d-grid">
+          <button type="submit" className="btn btn-primary" onClick={sendDepositRequest}>
+            Deposit
           </button>
         </div>
         </div>
