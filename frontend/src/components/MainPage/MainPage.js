@@ -5,6 +5,14 @@ import AppContext from '../AppContext';
 export function MainPage(props) {
     const appValues = useContext(AppContext);
 
+    useEffect(() => {
+        axios.get('http://localhost:8080/view')
+        .then(response => console.log(response))
+        .catch(error => {
+          console.error('There was an error!', error);
+        });
+      }, []);
+
     return(
         <div>
         <h3>Welcome, {appValues.username}!</h3>
