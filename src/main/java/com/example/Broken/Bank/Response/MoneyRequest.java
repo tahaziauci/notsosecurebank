@@ -23,6 +23,7 @@ public class MoneyRequest {
     String username;
 
     @NotNull(message = "Withdraw/Deposit amount is mandatory")
+    @Digits(integer= 10, fraction = 2, message = "Amount format is incorrect")
     @DecimalMin(value= "0.0", message = "Amount must be a positive number")
     @DecimalMax(value= "4294967295.99", message = "You got a lot of money to operate! Fail!") // TODO: need to double check
     BigDecimal amount;
