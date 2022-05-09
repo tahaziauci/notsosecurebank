@@ -12,4 +12,5 @@ public interface UserService {
     ResponseEntity checkUser(User user, HttpSession session);
     ResponseEntity viewUserBalance(HttpSession session);
     ResponseEntity withdraw(HttpSession session, MoneyRequest moneyRequest);
+    ResponseEntity deposit(HttpSession session, MoneyRequest moneyRequest);
 }
