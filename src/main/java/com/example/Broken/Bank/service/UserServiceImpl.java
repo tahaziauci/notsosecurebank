@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 import static com.example.Broken.Bank.constand.Constants.CURRENTUSER;
 
@@ -188,5 +189,11 @@ public class UserServiceImpl implements UserService {
                 .timestamp(new Date())
                 .build();
         return ResponseEntity.badRequest().body(msg);
+    }
+
+    @Override
+    public ResponseEntity getAllUsers(){
+        List<User> list = userRepository.findAll();
+        return ResponseEntity.ok(list);
     }
 }

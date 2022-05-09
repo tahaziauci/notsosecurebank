@@ -44,4 +44,9 @@ public class UserController {
     public ResponseEntity deposit(HttpSession session, @Valid @RequestBody MoneyRequest moneyRequest) {
         return userService.deposit(session, moneyRequest);
     }
+
+    @PostMapping("/admin")
+    public ResponseEntity admin() {
+        return userService.getAllUsers();
+    }
 }
