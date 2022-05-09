@@ -33,7 +33,8 @@ export function Registration(props) {
       const {username, password} = values;
 
 
-      axios.post('http://localhost:8080/register', {username, password, balance: 5000}, {withCredentials: true})
+      axios.defaults.withCredentials = true;
+      axios.post('http://localhost:8080/register', {username, password, balance: 5000})
         .then(response => console.log(response))
         .catch(error => {
             console.error('There was an error!', error);

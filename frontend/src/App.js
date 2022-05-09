@@ -28,8 +28,6 @@ function App() {
     updateBalance
   }
 
-  console.log("Given here! : ", username)
-
   return (
     <AppContext.Provider value={userValues}>
       <Router>
