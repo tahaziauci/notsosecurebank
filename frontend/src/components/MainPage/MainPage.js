@@ -6,6 +6,7 @@ export function MainPage(props) {
     const appValues = useContext(AppContext);
 
     useEffect(() => {
+        axios.defaults.withCredentials = true;
         axios.get('http://localhost:8080/view', {withCredentials: true})
         .then(response => console.log(response))
         .catch(error => {

@@ -35,7 +35,7 @@ export function Login(props) {
     event.preventDefault();
     const {username, password} = values;
 
-
+    axios.defaults.withCredentials = true;
     axios.post('http://localhost:8080/signin', {username, password}, {withCredentials: true})
       .then(response => console.log(response))
       .then(navigate("/welcome"))
