@@ -36,7 +36,7 @@ export function Login(props) {
     const {username, password} = values;
 
 
-    axios.post('http://localhost:8080/signin', {username, password})
+    axios.post('http://localhost:8080/signin', {username, password}, {withCredentials: true})
       .then(response => console.log(response))
       .then(navigate("/welcome"))
       .catch(error => {

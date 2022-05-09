@@ -6,7 +6,7 @@ export function MainPage(props) {
     const appValues = useContext(AppContext);
 
     useEffect(() => {
-        axios.get('http://localhost:8080/view')
+        axios.get('http://localhost:8080/view', {withCredentials: true})
         .then(response => console.log(response))
         .catch(error => {
           console.error('There was an error!', error);
