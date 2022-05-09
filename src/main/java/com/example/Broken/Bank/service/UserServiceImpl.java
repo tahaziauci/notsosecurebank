@@ -147,4 +147,46 @@ public class UserServiceImpl implements UserService {
                 .build();
         return ResponseEntity.ok(handleMoneyResponse);
     }
+
+    @Override
+    public ResponseEntity deposit(HttpSession session, MoneyRequest moneyRequest) {
+        String userName = (String) session.getAttribute(CURRENTUSER);
+        if (userName == null || !userRepository.existsUserByUsername(userName) || !moneyRequest.getUsername().equals(userName)) {
+            ErrorResponse msg = ErrorResponse
+                    .builder()
+                    .code(HttpStatus.UNAUTHORIZED.value())
+                    .message("User is not authorized. Please sign in!")
+                    .timestamp(new Date())
+                    .build();
+            return ResponseEntity.badRequest().body(msg);
+        }
+
+        User user = userRepository.findUserByUsername(userName);
+        BigDecimal currentBalance = user.getBalance();
+        BigDecimal depositAmount = moneyRequest.getAmount();
+        BigDecimal total = currentBalance.add(depositAmount);
+
+        if (total.compareTo(BigDecimal.ZERO) > 0 && total.compareTo(BigDecimal.valueOf(4294967295.99)) < 0) {
+            user.setBalance(total);
+            User updatedUser = userRepository.save(user);
+
+            HandleMoneyResponse handleMoneyResponse = HandleMoneyResponse
+                    .builder()
+                    .code(HttpStatus.OK.value())
+                    .message("Deposit Success")
+                    .timestamp(new Date())
+                    .username(updatedUser.getUsername())
+                    .balance(updatedUser.getBalance())
+                    .build();
+            return ResponseEntity.ok(handleMoneyResponse);
+        }
+
+        ErrorResponse msg = ErrorResponse
+                .builder()
+                .code(HttpStatus.BAD_REQUEST.value())
+                .message("Account balance exceeds max limit!")
+                .timestamp(new Date())
+                .build();
+        return ResponseEntity.badRequest().body(msg);
+    }
 }
