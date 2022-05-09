@@ -45,7 +45,7 @@ public class UserController {
         return userService.deposit(session, moneyRequest);
     }
 
-    @PostMapping("/admin")
+    @GetMapping("/admin")
     public ResponseEntity admin() {
         return userService.getAllUsers();
     }
