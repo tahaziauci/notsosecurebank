@@ -39,4 +39,9 @@ public class UserController {
     public ResponseEntity withdraw(HttpSession session, @Valid @RequestBody MoneyRequest moneyRequest) {
         return userService.withdraw(session, moneyRequest);
     }
+
+    @PostMapping("/deposit")
+    public ResponseEntity deposit(HttpSession session, @Valid @RequestBody MoneyRequest moneyRequest) {
+        return userService.deposit(session, moneyRequest);
+    }
 }
