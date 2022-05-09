@@ -3,6 +3,7 @@ package com.example.Broken.Bank.exception;
 import com.example.Broken.Bank.Response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -16,6 +17,18 @@ import java.util.List;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     // Cited: https://juejin.cn/post/6938250125743489054
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponse> handleHttpMessageNotReadableException(HttpMessageNotReadableException e){
+        ErrorResponse msg = ErrorResponse
+                            .builder()
+                            .code(HttpStatus.BAD_REQUEST.value())
+                            .message(e.getMessage().split(";")[0])
+                            .timestamp(new Date())
+                            .build();
+        return new ResponseEntity<>(msg, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleValidationExceptions(
             MethodArgumentNotValidException ex) {
