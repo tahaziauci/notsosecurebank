@@ -5,25 +5,30 @@ import AppContext from '../AppContext';
 export function MainPage(props) {
     const [withdrawAmount, setWithdrawAmount] = useState(0);
     const [depositAmount, setDepositAmount] = useState(0);
+    const [errorMessage, setErrorMessage] = useState('');
 
     const appValues = useContext(AppContext);
 
     const handleWithdrawAmountChange = (event) => {
         event.persist();
+        setErrorMessage('');
         const re = /^[0-9]+\.?[0-9]*$/;
 
         if (event.target.value === '' || re.test(event.target.value)) {
-            setWithdrawAmount(event.target.value);
+            const withdraw = event.target.value;
+            setWithdrawAmount(withdraw);
         }
     }
 
     const handleDepositAmountChange = (event) => {
         event.persist();
+        setErrorMessage('');
 
         const re = /^[0-9]+\.?[0-9]*$/;
 
         if (event.target.value === '' || re.test(event.target.value)) {
-            setDepositAmount(event.target.value);
+            const deposit = event.target.value;
+            setDepositAmount(deposit);
         }
     }
 
@@ -39,6 +44,7 @@ export function MainPage(props) {
     const sendWithdrawRequest = () => {
         if (withdrawAmount > appValues.balance) {
             console.error('Not enough cash')
+            setErrorMessage('Error: Not enough cash!')
         } else {
             const username = appValues.username;
             const amount = parseFloat(withdrawAmount);
@@ -49,7 +55,7 @@ export function MainPage(props) {
                 appValues.updateBalance(response.data.balance)
             })
             .catch(error => {
-                console.error('There was an error!', error);
+                setErrorMessage("Error: " + error.response.data.message);
             })
         }
     }
@@ -64,7 +70,7 @@ export function MainPage(props) {
             appValues.updateBalance(response.data.balance)
         })
         .catch(error => {
-            console.error('There was an error!', error);
+            setErrorMessage("Error: " + error.response.data.message);
         })
     }
 
@@ -107,6 +113,7 @@ export function MainPage(props) {
             Deposit
           </button>
         </div>
+        {errorMessage && <div className="mb-3 error-message">{errorMessage}</div>}
         </div>
     );
 }

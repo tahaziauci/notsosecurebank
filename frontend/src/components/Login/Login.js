@@ -9,12 +9,14 @@ export function Login(props) {
     username: '',
     password: ''
   });
+  const [errorMessage, setErrorMessage] = useState('');
 
   const appValues = useContext(AppContext);
   const navigate = useNavigate();
 
   const handleUsernameChange = (event) => {
     event.persist();
+    setErrorMessage('');
 
     setValues((values) => ({
       ...values,
@@ -24,6 +26,7 @@ export function Login(props) {
 
   const handlePasswordChange = (event) => {
     event.persist();
+    setErrorMessage('');
 
     setValues((values) => ({
       ...values,
@@ -43,7 +46,7 @@ export function Login(props) {
         navigate("/welcome")
       })
       .catch(error => {
-          console.error('There was an error!', error);
+        setErrorMessage("Error: " + error.response.data.message);
       });
 
   };
@@ -76,6 +79,7 @@ export function Login(props) {
             Submit
           </button>
         </div>
+        {errorMessage && <div className="mb-3 error-message">{errorMessage}</div>}
         <p className="forgot-password text-right">
           New user? Go to <a href="/registration">registration</a>
         </p>
