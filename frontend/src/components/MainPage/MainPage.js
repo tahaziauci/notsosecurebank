@@ -46,32 +46,40 @@ export function MainPage(props) {
             console.error('Not enough cash')
             setErrorMessage('Error: Not enough cash!')
         } else {
-            const username = appValues.username;
-            const amount = parseFloat(withdrawAmount);
-            axios.defaults.withCredentials = true;
-            axios.post('http://localhost:8080/withdraw', {username, amount})
-            .then(response => {
-                setWithdrawAmount(0)
-                appValues.updateBalance(response.data.balance)
-            })
-            .catch(error => {
-                setErrorMessage("Error: " + error.response.data.message);
-            })
+            if(withdrawAmount.startsWith("0") && !withdrawAmount.startsWith("0.")){
+                setErrorMessage("Invalid input to withdraw");
+            } else {
+                const username = appValues.username;
+                const amount = parseFloat(withdrawAmount);
+                axios.defaults.withCredentials = true;
+                axios.post('http://localhost:8080/withdraw', {username, amount})
+                    .then(response => {
+                        setWithdrawAmount(0)
+                        appValues.updateBalance(response.data.balance)
+                    })
+                    .catch(error => {
+                        setErrorMessage("Error: " + error.response.data.message);
+                    })
+            }
         }
     }
 
     const sendDepositRequest = () => {
-        const username = appValues.username;
-        const amount = parseFloat(depositAmount);
-        axios.defaults.withCredentials = true;
-        axios.post('http://localhost:8080/deposit', {username, amount})
-        .then(response => {
-            setDepositAmount(0)
-            appValues.updateBalance(response.data.balance)
-        })
-        .catch(error => {
-            setErrorMessage("Error: " + error.response.data.message);
-        })
+        if(depositAmount.startsWith("0") && !depositAmount.startsWith("0.")){
+            setErrorMessage("Invalid input to deposit");
+        } else {
+            const username = appValues.username;
+            const amount = parseFloat(depositAmount);
+            axios.defaults.withCredentials = true;
+            axios.post('http://localhost:8080/deposit', {username, amount})
+                .then(response => {
+                    setDepositAmount(0)
+                    appValues.updateBalance(response.data.balance)
+                })
+                .catch(error => {
+                    setErrorMessage("Error: " + error.response.data.message);
+                })
+        }
     }
 
     return(
