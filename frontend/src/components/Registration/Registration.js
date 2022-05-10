@@ -9,11 +9,14 @@ export function Registration(props) {
       password: ''
     });
 
+    const [errorMessage, setErrorMessage] = useState('');
+
     const navigate = useNavigate();
     const appValues = useContext(AppContext);
 
     const handleUsernameChange = (event) => {
       event.persist();
+      setErrorMessage('');
 
       setValues((values) => ({
         ...values,
@@ -23,6 +26,7 @@ export function Registration(props) {
 
     const handlePasswordChange = (event) => {
       event.persist();
+      setErrorMessage('');
 
       setValues((values) => ({
         ...values,
@@ -39,7 +43,7 @@ export function Registration(props) {
       axios.post('http://localhost:8080/register', {username, password, balance: 5000})
         .then(() => navigate("/login"))
         .catch(error => {
-            console.error('There was an error!', error);
+          setErrorMessage("Error: " + error.response.data.message);
         });
     };
 
@@ -71,6 +75,7 @@ export function Registration(props) {
             Sign Up
           </button>
         </div>
+        {errorMessage && <div className="mb-3 error-message">{errorMessage}</div>}
         <p className="forgot-password text-right">
           Already registered <a href="/login">sign in?</a>
         </p>
