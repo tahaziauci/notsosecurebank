@@ -27,13 +27,14 @@ CREATE TABLE dev.User (
   UNIQUE INDEX username_UNIQUE (username ASC) VISIBLE);
 ```
 
-### Build Project (Run Spring Application on localhost:8080)
+### Build Project (Run Spring Application on http://localhost:8080)
 1. Open code for project in IntelliJ IDEA
 2. Navigate to src > main > resources > application.properties
    1. *Only* change the port number used in spring.datasource.url if a port other than 3306 was used in the above database build.
    2. **Change the username in spring.datasource.username to your username for the database.**
    3. **Change the password in spring.datasource.password to your password for the specified username.**
-3. Run BrokenBankApplication: src > main > java > com.example.Broken.Bank > BrokenBankApplication**
+> Note: This is quite important that you enter the correct credentials so that springboot application can communicate with the local mysql database you setup
+3. Run BrokenBankApplication: src > main > java > com.example.Broken.Bank > BrokenBankApplication
 
 ### Running the Web App on localhost:3000
 1. In Terminal, navigate to notsosecurebank directory.
@@ -50,3 +51,5 @@ npm install
 npm start
 ```
 5. A new page will open in Chrome [http://localhost:3000/](http://localhost:3000/)
+
+## Tech Suport: Let us know if you have any questions. Feel free to contact us on Slack if you run into any issues: Changhao Liu, Lonnie Nguyen, Xinnan Wu, Taha Zia
