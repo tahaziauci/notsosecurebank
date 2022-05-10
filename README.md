@@ -1,12 +1,16 @@
 # SWE266P Course Project
-This is a deliberately insecure banking web application.
+Not-so-secure bank is a deliberately insecure banking web application.
 
 Collaborators: Changhao Liu, Lonnie Nguyen, Xinnan Wu, Taha Zia
 
 ## Build Instructions
+### Prerequisites
+- MySQL workbench and sever
+- IntelliJ IDEA
+
 ### Building the Database
 1. Open MySQL Workbench and connect to Local instance 3306 (ensure that MySQL server has been started)
-2. If needed, setup a new Connection by clicking on the + icon near "MySQL Connections"
+2. If you do not have a Local instance 3306, setup a new Connection by clicking on the + icon near "MySQL Connections"
 3. Right click under SCHEMAS and choose Create Schema...
 4. Change Schema Name to dev and click Apply
 5. Edit the SQL script using the provided script below and click Apply
@@ -22,10 +26,26 @@ CREATE TABLE dev.User (
   UNIQUE INDEX username_UNIQUE (username ASC) VISIBLE);
 ```
 
-### Building the Project
-1. Filler text
-2. Filler text
+### Build Project (Run Spring Application)
+1. Open code for project in IntelliJ IDEA
+2. Navigate to src > main > resources > application.properties
+   1. *Only* change the port number used in spring.datasource.url if a port other than 3306 was used in the above database build.
+   2. Change the username in spring.datasource.username to your username for the database.
+   3. Change the password in spring.datasource.password to your password for the specified username.
+3. Run BrokenBankApplication: src > main > java > com.example.Broken.Bank > BrokenBankApplication
 
 ### Running the Web App
-1. Filler text
-2. Filler text
+1. In Terminal, navigate to notsosecurebank directory.
+2. Change directory to frontend using the following command:
+```commandline
+cd frontend
+```
+3. Install package and its dependencies using the following command:
+```commandline
+npm install
+```
+4. Start the package:
+```commandline
+npm start
+```
+5. A new browser will open in Chrome
