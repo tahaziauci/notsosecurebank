@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import static com.example.Broken.Bank.constand.Constants.CURRENTUSER;
+
 @CrossOrigin(origins = { "http://localhost:3000/" }, allowedHeaders = "*", allowCredentials = "true")
 @RestController
 public class UserController {
@@ -19,7 +21,8 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity register(@Valid @RequestBody User user) {
+    public ResponseEntity register(@Valid @RequestBody User user, HttpSession session) {
+        session.setAttribute(CURRENTUSER, user.getUsername()); // BAD CODE;
         return userService.saveNewUser(user);
     }
 
