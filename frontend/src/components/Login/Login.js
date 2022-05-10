@@ -38,6 +38,7 @@ export function Login(props) {
     axios.defaults.withCredentials = true;
     axios.post('http://localhost:8080/signin', {username, password})
       .then(response => {
+        appValues.updateUsername(username);
         console.log(response.data)
         navigate("/welcome")
       })
@@ -45,7 +46,6 @@ export function Login(props) {
           console.error('There was an error!', error);
       });
 
-    appValues.updateUsername(username);
   };
 
     return (
