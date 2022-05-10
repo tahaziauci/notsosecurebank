@@ -7,6 +7,7 @@ Collaborators: Changhao Liu, Lonnie Nguyen, Xinnan Wu, Taha Zia
 ### Prerequisites
 - MySQL workbench and sever
 - IntelliJ IDEA
+- node.js and npm [`https://nodejs.org/en/download/`](#https://nodejs.org/en/download/)
 
 ### Building the Database
 1. Open MySQL Workbench and connect to Local instance 3306 (ensure that MySQL server has been started)
@@ -48,4 +49,4 @@ npm install
 ```commandline
 npm start
 ```
-5. A new browser will open in Chrome
+5. A new page will open in Chrome [`http://localhost:3000/`](#http://localhost:3000/)
