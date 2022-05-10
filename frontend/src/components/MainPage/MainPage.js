@@ -10,12 +10,21 @@ export function MainPage(props) {
 
     const handleWithdrawAmountChange = (event) => {
         event.persist();
-        setWithdrawAmount(event.target.value);
+        const re = /^[0-9]+\.?[0-9]*$/;
+
+        if (event.target.value === '' || re.test(event.target.value)) {
+            setWithdrawAmount(event.target.value);
+        }
     }
 
     const handleDepositAmountChange = (event) => {
         event.persist();
-        setDepositAmount(event.target.value);
+
+        const re = /^[0-9]+\.?[0-9]*$/;
+
+        if (event.target.value === '' || re.test(event.target.value)) {
+            setDepositAmount(event.target.value);
+        }
     }
 
     useEffect(() => {
@@ -32,7 +41,7 @@ export function MainPage(props) {
             console.error('Not enough cash')
         } else {
             const username = appValues.username;
-            const amount = withdrawAmount;
+            const amount = parseFloat(withdrawAmount);
             axios.defaults.withCredentials = true;
             axios.post('http://localhost:8080/withdraw', {username, amount})
             .then(response => {
@@ -47,7 +56,7 @@ export function MainPage(props) {
 
     const sendDepositRequest = () => {
         const username = appValues.username;
-        const amount = depositAmount;
+        const amount = parseFloat(depositAmount);
         axios.defaults.withCredentials = true;
         axios.post('http://localhost:8080/deposit', {username, amount})
         .then(response => {
