@@ -53,3 +53,5 @@ npm start
 5. A new page will open in Chrome [http://localhost:3000/](http://localhost:3000/)
 
 ## Tech Suport: Let us know if you have any questions. Feel free to contact us on Slack if you run into any issues: Changhao Liu, Lonnie Nguyen, Xinnan Wu, Taha Zia
+
+Design help taken from: https://www.positronx.io/build-react-login-sign-up-ui-template-with-bootstrap-4/
