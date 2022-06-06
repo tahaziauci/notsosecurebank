@@ -110,8 +110,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ResponseEntity withdraw(HttpSession session, MoneyRequest moneyRequest) {
-        String userName = moneyRequest.getUsername(); // BADCODE (String) session.getAttribute(CURRENTUSER);
-        if (userName == null || !userRepository.existsUserByUsername(userName)) { // BADCODE: || !moneyRequest.getUsername().equals(userName)) {
+        String userName = (String) session.getAttribute(CURRENTUSER);
+        if (userName == null || !userRepository.existsUserByUsername(userName)
+                || !moneyRequest.getUsername().equals(userName)) {
             ErrorResponse msg = ErrorResponse
                     .builder()
                     .code(HttpStatus.UNAUTHORIZED.value())
