@@ -9,6 +9,7 @@ import com.example.Broken.Bank.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
@@ -26,11 +27,13 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public ResponseEntity saveNewUser(User user) {
         String username = user.getUsername();
-        String password = user.getPassword();  // TODO: for FIX, we need to hash password and store in DB: passwordEncoder.encode(password)
+        String password = bCryptPasswordEncoder.encode(user.getPassword());
         BigDecimal balance = user.getBalance();
 
         // check duplicate user
@@ -63,7 +66,8 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity checkUser(User user, HttpSession session) {
         String username = user.getUsername();
         String password = user.getPassword();
-        if (!userRepository.existsUserByUsernameAndPassword(username, password)) {
+        if (!userRepository.existsUserByUsername(username)
+                || !bCryptPasswordEncoder.matches(password, userRepository.findUserByUsername(username).getPassword())) {
             ErrorResponse msg = ErrorResponse
                     .builder()
                     .code(HttpStatus.UNAUTHORIZED.value())
