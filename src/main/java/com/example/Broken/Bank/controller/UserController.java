@@ -21,8 +21,7 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity register(@Valid @RequestBody User user, HttpSession session) {
-        session.setAttribute(CURRENTUSER, user.getUsername()); // BAD CODE;
+    public ResponseEntity register(@Valid @RequestBody User user) {
         return userService.saveNewUser(user);
     }
 
