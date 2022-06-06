@@ -66,7 +66,7 @@ public class UserServiceImpl implements UserService {
     public ResponseEntity checkUser(User user, HttpSession session) {
         String username = user.getUsername();
         String password = user.getPassword();
-        if (!userRepository.existsUserByUsername(username)
+        if (!userRepository.existsUserByUsername(username) || !password.matches("^[a-z0-9_\\-\\.]+$")
                 || !bCryptPasswordEncoder.matches(password, userRepository.findUserByUsername(username).getPassword())) {
             ErrorResponse msg = ErrorResponse
                     .builder()
