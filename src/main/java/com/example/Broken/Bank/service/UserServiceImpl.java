@@ -33,11 +33,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResponseEntity saveNewUser(User user) {
         String username = user.getUsername();
-        String password = bCryptPasswordEncoder.encode(user.getPassword());
         BigDecimal balance = user.getBalance();
 
         // check duplicate user
-        if (userRepository.existsUserByUsername(username) || balance == null) {
+        if (userRepository.existsUserByUsername(username) || balance == null || !user.getPassword().matches("^[a-z0-9_\\-\\.]+$")) {
             ErrorResponse msg = ErrorResponse
                     .builder()
                     .code(HttpStatus.BAD_REQUEST.value())
@@ -48,8 +47,9 @@ public class UserServiceImpl implements UserService {
         }
 
         // add new user
+        String hashedPassword = bCryptPasswordEncoder.encode(user.getPassword());
         User newUser = User.builder()
-                .username(username).password(password).balance(balance).build();
+                .username(username).password(hashedPassword).balance(balance).build();
 
         userRepository.save(newUser);
 
