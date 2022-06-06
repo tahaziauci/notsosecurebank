@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import static com.example.Broken.Bank.constand.Constants.CURRENTUSER;
+import static com.example.Broken.Bank.constants.Constants.CURRENTUSER;
 
 @CrossOrigin(origins = { "http://localhost:3000/" }, allowedHeaders = "*", allowCredentials = "true")
 @RestController
